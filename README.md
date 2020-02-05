@@ -1,2 +1,2 @@
 # js_readline
-This project includes scripts for handling js input in bash
+This project includes shell scripts that should go to ~/local/
