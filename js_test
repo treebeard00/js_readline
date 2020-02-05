@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function readjs() {
+    shopt -s extglob
+    while read -r line; do 
+        line=${line%%[$'\t\r\n ']}
+        # echo "line=$line<"
+        if [ -z "$line" ]; then
+            #echo "found empty line, returning 0"
+            return 0;
+        else
+            #echo "evaluating line"
+            eval "$line"
+        fi
+    done
+    #echo "returning 1"
+    return 1
+}
+cat a.json | jq -r '[.[] | to_entries | map([.key, "=", @sh "\(.value)"]) | map(add)] | map([., [""]]) | flatten(1) | .[0:length-1] | .[] | .[]' | while readjs; do 
+    echo "name=$name, age=$age"
+done
